@@ -1,0 +1,8 @@
+{% include 'index.html' %}
+
+{% block content %}
+    <h2>{{entry.title}}</h2>
+    <p>{{ entry.text }}</p>
+    <p>{{ entry.pub_date }}</p>
+    <br>
+{% endblock %}

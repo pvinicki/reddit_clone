@@ -1,21 +1,29 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data = request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
 
         if form.is_valid():
-            #log the user in
+            user = authenticate(request, username = username, password = password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                return redirect('accounts:login')
             return redirect('home')
     else:
         form = AuthenticationForm()
     
     return render(request, 'login.html', {'form':form})
 
-def register(request):
+def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
 
