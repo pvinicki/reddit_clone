@@ -1,11 +1,19 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<div style="padding-left: 24px">
     <form action="" method="POST">{% csrf_token %}
-        <input type="text" name="title" id="title">
+        Title:
+        <div>
+            <input type="text" name="title" id="title">
+         </div>
         <br>
-        <textarea name="text" id="text" cols="30" rows="10"></textarea>
+        Text:
+        <div>
+            <textarea name="text" id="text" cols="30" rows="10"></textarea>
+        </div>
         <br>
         <input type="submit" value="Post">
     </form>
+</div>
 {% endblock %}

@@ -1,19 +1,30 @@
 {% include 'index.html' %}
-
+<div class=row>
 {% block content %}
-    <div class="container"></div>
-    <div class="col col-lg-9">
-    {% for entry in entries %}
-            <h2><a href="{% url 'comments:entry_detail' entry.pk %}">{{entry.title}}</a></h2>
-            <p>{{ entry.snippet }}</p>
-            <p>{{ entry.pub_date }}</p>
+    <div class="col col-lg-9" style="padding-left: 24px">
+        {% for entry in entries %}
+            <div class="card">
+                <div class="card-body" style="padding:12px">
+                    <div class="card-title">
+                        <h4><a href="{% url 'comments:entry_detail' entry.pk %}">{{entry.title}}</a></h4>
+                    </div>
+                    <div class="card-text">
+                        {{ entry.snippet }}
+                    </div>
+
+                    <div class="card-footer text-muted">
+                        {{ entry.pub_date }}
+                    </div>
+                </div>
+            </div>
             <br>
-    {% endfor %}
+        {% endfor %}
     </div>
+
     <div class="col col-lg-3">
-        <div style="align-content:center">
+        <div style="text-align: center">
             <a href="make_entry"><button class="btn btn-primary btn-lg">Make Post</button></a>
         </div>
     </div>
-    </div>
+</div>
 {% endblock %}
