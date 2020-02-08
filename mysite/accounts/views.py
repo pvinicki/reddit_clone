@@ -18,6 +18,7 @@ def login_view(request):
             else:
                 return redirect('accounts:login')
             return redirect('home')
+            
     else:
         form = AuthenticationForm()
     

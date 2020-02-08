@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Entry
+from .models import Comment
 from .forms import Post
 from datetime import datetime
 
@@ -21,8 +22,17 @@ def make_entry(request):
     return render(request, 'post.html', {'form':form})
 
 def entry_detail(request, entry_id):
-    entry = Entry.objects.get(id=entry_id)
-    return render(request, 'entry_detail.html', {'entry':entry})
+    if request.method == "POST":
+            #solve to check if user logged in
+            @login_required(redirect_field_name='accounts:login_view')
+            post = Comment()
+            post.text = request.POST['text']
+            #place comment in db
+
+    form = Post()
+    entry = Entry.objects.get(id = entry_id)
+    comments = Comment.objects.filter(entry = entry_id)
+    return render(request, 'entry_detail.html', {'entry':entry, 'comments':comments, 'form': form})
 
 def comment(request, entry_id):
     entry = get_object_or_404(Entry, pk=entry_id)
