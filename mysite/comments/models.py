@@ -10,7 +10,7 @@ class Entry(models.Model):
         return self.text[:50] + "..."
 
 class Comment(models.Model):
-    #solve how to make threads (parent comments)
+    #parentID = models.IntegerField(default = 0)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     name = models.CharField(max_length = 50)
     text = models.TextField(max_length = 500, blank = True)

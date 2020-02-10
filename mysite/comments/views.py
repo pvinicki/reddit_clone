@@ -27,6 +27,7 @@ def entry_detail(request, entry_id):
     form = Post()
     entry = Entry.objects.get(id = entry_id)
     comments = Comment.objects.filter(entry = entry_id)
+    #childs = Comment.objects.filter(id = )
     return render(request, 'entry_detail.html', {'entry':entry, 'comments':comments, 'form': form})
 
 @login_required(login_url="accounts:login_view")
@@ -41,20 +42,27 @@ def make_comment(request, entry_id):
         comment.pub_date = datetime.now()
         comment.save()
 
-    return redirect(request, 'home')
+    return entry_detail(request, entry_id)
 
+@login_required(login_url="accounts:login_view")
 def upvote(request, entry_id):
     return cast_vote(request, entry_id, +1)
 
+@login_required(login_url="accounts:login_view")
 def downvote(request, entry_id):
     return cast_vote(request, entry_id, -1)
 
 def cast_vote(request, entry_id, score):
-    entry = Entry.objects.filter(id = entry_id)
-    entry = entry[0]
-    entry.votes += score
-    entry.save()
-    
-    return redirect('home')
+    variable = "votes {0} {1}".format(entry_id, score)
+
+    if variable not in request.session:
+        entry = Entry.objects.filter(id = entry_id)
+        entry = entry[0]
+        entry.votes += score
+        entry.save()
+
+        #request.session[variable] = True
+
+    return entry_detail(request, entry_id)
 
     
