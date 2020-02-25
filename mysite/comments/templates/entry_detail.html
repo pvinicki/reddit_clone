@@ -1,15 +1,24 @@
 {% include 'index.html' %}
 
+<div style="background-color: #333333">
 {% block content %}
-    <div style="padding-left: 24px">
-        <h2>{{ entry.title }}</h2>
-        <p style="font-size: 18px">{{ entry.text }}</p>
-        <p>{{ entry.pub_date }}</p>
-        <br>
-        <small>VOTES: {{entry.votes}}</small>
+    <div style="padding-left: 24px; padding-top: 34px; padding-right: 24px" style="background-color: #333333">
+        <div class="card text-white bg-dark border-light">
+            <div class="card-body">
+                <div class="card-title">
+                    <h2>{{ entry.title }}</h2>
+                </div>
+                <div class="card-text">
+                    <p style="font-size: 18px;">{{ entry.text }}</p>
+                </div>
+                <br>
+                <small>VOTES: {{entry.votes}}</small>
+                <p style="font-size: 13px; margin-bottom: 2px;">{{ entry.pub_date }}</p>
+            </div>
+        </div>
         <br>
         <a href="{% url 'comments:upvote' entry.pk %}"><button >upvote</button> </a>
-        <a href="{% url 'comments:upvote' entry.pk %}"><button >downvote</button> </a>
+        <a href="{% url 'comments:downvote' entry.pk %}"><button >downvote</button> </a>
 
         <div>
             <form action="{% url 'comments:make_comment' entry.pk %}" method="POST">{% csrf_token %}
@@ -18,19 +27,31 @@
                 <input type="submit" value="Comment">
             </form>
         </div>
-
+        <br>
+        <br>
         <div>
-        {% for comment in comments %}
-            <div class="card">
-                <p style="font-size: 16px" >{{ comment.name }}</p>
-                <p style="font-size: 14px"> {{ comment.text }} </p>
-                <small>VOTES: {{ comment.votes }}</small> 
-                <p><small>{{ comment.pub_date }}</small></p>
+        {% if request.user.is_superuser %}
+            {% for comment in comments %}
+                <div class="card text-white bg-dark border-light">
+                    <p style="font-size: 17px; padding-left:10px; margin-bottom: 2px" >{{ comment.name }}</p>
+                    <p style="font-size: 14px; padding-left:10px;"> {{ comment.text }} </p>
+                    <p style="font-size: 14px; margin-bottom: 2px; padding-left:10px;"><small>{{ comment.pub_date }}</small></p>
+                </div>
+                <a href="{% url 'comments:edit_comment' comment.pk entry.pk %}"><button>Edit</button></a>
+                <a href="{% url 'comments:remove_comment' comment.pk entry.pk %}"><button>Remove</button></a>
+                <br>
+                <br>
+            {% endfor %}
+        {% else %}
+            {% for comment in comments %}
+            <div class="card text-white bg-dark border-light">
+                <p style="font-size: 17px; padding-left:10px; margin-bottom: 2px" >{{ comment.name }}</p>
+                <p style="font-size: 14px; padding-left:10px;"> {{ comment.text }} </p>
+                <p style="font-size: 14px; margin-bottom: 2px; padding-left:10px;"><small>{{ comment.pub_date }}</small></p>
             </div>
             <br>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     </div>
-
-</div>
-    
 {% endblock %}
+</div>

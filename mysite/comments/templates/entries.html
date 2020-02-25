@@ -1,9 +1,9 @@
 {% include 'index.html' %}
-<div class=row>
+<div class=row style="background-color: #333333">
 {% block content %}
-    <div class="col col-lg-9" style="padding-left: 24px">
+    <div class="col col-lg-9" style="padding-left: 44px; padding-top: 32px">
         {% for entry in entries %}
-            <div class="card">
+            <div class="card text-white bg-dark border-light">
                 <div class="card-body" style="padding:12px">
                     <div class="card-title">
                         <h4><a href="{% url 'comments:entry_detail' entry.pk %}">{{entry.title}}</a></h4>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="col col-lg-3">
-        <div style="text-align: center">
+        <div style="text-align: center; padding-top: 32px">
             <a href="make_entry"><button class="btn btn-primary btn-lg">Make Post</button></a>
         </div>
     </div>

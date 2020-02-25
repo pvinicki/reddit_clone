@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
@@ -14,6 +14,7 @@ def login_view(request):
             user = authenticate(request, username = username, password = password)
             if user is not None:
                 login(request, user)
+                request.session['state'] = ''
                 return redirect('home')
             else:
                 return redirect('accounts:login')
@@ -31,10 +32,17 @@ def register_view(request):
         if form.is_valid():
             form.save()
             #log the user in
-
+            user = authenticate(request, username = username, password = password)
+            login(request, user)
             return redirect('home')
     else:
         form = UserCreationForm()
 
     return render(request, 'register.html', {'form':form})
+
+def logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+    
+    return redirect('home')
 

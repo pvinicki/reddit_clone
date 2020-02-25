@@ -1,0 +1,14 @@
+{% include 'index.html' %}
+
+{% block content %}
+    <div style="padding-left: 24px">
+        <form action="{% url 'comments:edit_comment' comment.pk entry.pk %}" method="POST">{% csrf_token %}
+            Text:
+            <div>
+                <textarea name="text" id="text" cols="30" rows="10">{{ comment.text }}</textarea>
+            </div>
+            <br>
+            <input type="submit" value="Post">
+        </form>
+    </div>
+{% endblock %}
